@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Autodiagnóstico para la Evaluación Final Transversal de MAT4221">
+  <title>Autodiagnóstico EFT | MAT4221</title>
+  <style>
+    :root{--navy:#17375e;--blue:#2563a6;--sky:#eaf4ff;--mint:#e7f7ef;--green:#16845b;--amber:#b56a00;--amber-bg:#fff5d9;--red:#b93838;--red-bg:#fff0f0;--ink:#203044;--muted:#64748b;--line:#d8e1eb;--paper:#fff;--bg:#f3f7fb;--shadow:0 8px 24px rgba(23,55,94,.10)}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);line-height:1.55}
+    button,input{font:inherit} button{cursor:pointer}
+    .hero{background:linear-gradient(125deg,#142f50,#205e94 70%,#287aa7);color:white;padding:42px 20px 70px}
+    .hero-inner,.shell{max-width:1100px;margin:auto}
+    .eyebrow{font-size:.82rem;text-transform:uppercase;letter-spacing:.13em;font-weight:800;opacity:.86}
+    h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.04;margin:.45rem 0 .8rem;max-width:850px}
+    .hero p{max-width:750px;font-size:1.08rem;margin:0;color:#e5f2ff}
+    .hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.hero-tag{background:#ffffff1b;border:1px solid #ffffff48;border-radius:999px;padding:7px 12px;font-size:.88rem}
+    .shell{padding:0 20px 56px;margin-top:-38px}
+    .panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+    .intro{padding:24px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+    .intro h2,.results h2{margin:0 0 5px;color:var(--navy)}.intro p{margin:0;color:var(--muted)}
+    .name-wrap{min-width:260px}.name-wrap label{font-weight:750;font-size:.9rem}.name-wrap input{width:100%;padding:11px 12px;border:1px solid #b9c6d5;border-radius:10px;margin-top:5px}
+    .progress-panel{margin-top:18px;padding:18px 20px;position:sticky;top:8px;z-index:20}
+    .progress-top{display:flex;justify-content:space-between;gap:12px;font-weight:750;font-size:.92rem}.progress-track{height:10px;background:#e6edf4;border-radius:99px;overflow:hidden;margin-top:9px}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#23a36d,#3b82f6);transition:.3s}
+    .topic-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:16px}
+    .topic-chip{border:1px solid var(--line);background:#f8fbfe;color:var(--navy);border-radius:11px;padding:9px 10px;text-align:left;font-size:.82rem;font-weight:700;display:flex;gap:7px;align-items:center}
+    .topic-chip:hover,.topic-chip:focus{border-color:#7ba9d6;background:var(--sky)}
+    .dot{width:9px;height:9px;background:#aab7c7;border-radius:50%;flex:0 0 auto}.dot.green{background:#20a36e}.dot.amber{background:#e59b25}.dot.red{background:#d95d5d}
+    .topic-section{margin-top:22px;scroll-margin-top:155px;overflow:hidden}
+    .topic-head{padding:22px 24px;background:linear-gradient(100deg,#eff6fd,#fff);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;align-items:center}
+    .topic-head h2{margin:0;color:var(--navy);font-size:1.25rem}.topic-head p{margin:3px 0 0;color:var(--muted);font-size:.92rem}.topic-score{white-space:nowrap;font-weight:800;color:var(--muted);font-size:.9rem}
+    .questions{padding:8px 24px 22px}.question{padding:19px 0;border-bottom:1px solid #e7edf3}.question:last-child{border-bottom:0}.q-number{display:inline-flex;background:var(--navy);color:#fff;border-radius:7px;padding:2px 8px;font-size:.78rem;font-weight:800;margin-right:7px}.question h3{display:inline;font-size:1rem;font-weight:720}.context{margin:13px 0;padding:13px 15px;background:#f7fafc;border-left:4px solid #79a8d6;border-radius:7px;font-size:.93rem;overflow:auto}
+    table.mini{border-collapse:collapse;margin:8px auto;min-width:430px;text-align:center;background:#fff}table.mini th,table.mini td{border:1px solid #bfcbd7;padding:6px 9px}table.mini th{background:#e9f2fb;color:var(--navy)}
+    .chart{display:block;max-width:530px;width:100%;height:auto;margin:8px auto}.axis-label{font-size:12px;fill:#334155}.chart-title{font-size:13px;font-weight:700;fill:#17375e}
+    .options{display:grid;gap:8px;margin-top:13px}.option{display:flex;gap:10px;align-items:flex-start;padding:11px 13px;border:1px solid #cfdae5;border-radius:10px;background:#fff;transition:.15s}.option:hover{border-color:#78a7d2;background:#f8fbff}.option input{margin-top:4px;accent-color:var(--blue)}.option.selected{border-color:var(--blue);background:#eef6ff}.option.correct{border-color:#38a878;background:var(--mint)}.option.wrong{border-color:#d76565;background:var(--red-bg)}.option.locked{cursor:default}
+    .feedback{display:none;margin-top:11px;padding:11px 13px;border-radius:9px;font-size:.92rem}.feedback.show{display:block}.feedback.hint{background:var(--amber-bg);color:#704500;border:1px solid #efcd79}.feedback.good{background:var(--mint);color:#0a6845;border:1px solid #91d6b9}.feedback.bad{background:var(--red-bg);color:#8b2929;border:1px solid #efb0b0}
+    .actions{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;margin:28px 0}.btn{border:0;border-radius:11px;padding:12px 18px;font-weight:800}.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:#194f88}.btn-secondary{background:#fff;color:var(--navy);border:1px solid #aebdcd}.btn-danger{background:#fff;color:var(--red);border:1px solid #e3aaaa}.btn:disabled{opacity:.45;cursor:not-allowed}
+    .attempt-note{text-align:center;color:var(--muted);font-size:.91rem;margin:-14px 0 22px}.results{display:none;padding:25px;margin-top:22px;scroll-margin-top:120px}.results.show{display:block}.result-grid{display:grid;grid-template-columns:210px 1fr;gap:24px;align-items:center;margin-top:18px}.score-ring{width:185px;height:185px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) 0%,#e5edf4 0);position:relative;margin:auto}.score-ring:before{content:"";position:absolute;width:140px;height:140px;background:#fff;border-radius:50%}.score-value{z-index:1;text-align:center;color:var(--navy)}.score-value strong{font-size:2.25rem;display:block;line-height:1}.score-value span{font-size:.82rem;color:var(--muted)}
+    .diagnosis{padding:15px 17px;border-radius:12px;background:#f4f8fc;border-left:5px solid var(--blue)}.diagnosis h3{margin:0 0 5px}.diagnosis p{margin:0}.topic-results{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}.topic-result{border:1px solid var(--line);border-radius:11px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px}.traffic{width:16px;height:16px;border-radius:50%}.traffic.green{background:#20a36e}.traffic.amber{background:#e59b25}.traffic.red{background:#d95d5d}.topic-result b{font-size:.9rem}.topic-result small{color:var(--muted);display:block}.recommendations{margin-top:18px;padding:17px;background:#fff9e8;border:1px solid #efd993;border-radius:12px}.recommendations h3{margin:0 0 8px;color:#754a00}.recommendations ul{margin:0;padding-left:20px}.results-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#eef2f7;border-radius:5px;padding:1px 5px;white-space:nowrap}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    footer{text-align:center;color:var(--muted);font-size:.86rem;padding:10px 20px 35px}
+    @media(max-width:760px){.intro{grid-template-columns:1fr}.name-wrap{min-width:0}.topic-nav{grid-template-columns:repeat(2,1fr)}.progress-panel{position:static}.topic-section{scroll-margin-top:12px}.questions{padding:4px 16px 17px}.topic-head{padding:18px 16px;align-items:flex-start}.result-grid{grid-template-columns:1fr}.topic-results{grid-template-columns:1fr}.shell{padding-left:12px;padding-right:12px}.hero{padding-top:30px}.actions{align-items:stretch;flex-direction:column}.btn{width:100%}}
+    @media print{.hero,.progress-panel,.actions,.attempt-note,.results-actions,footer,.name-wrap{display:none!important}.shell{margin:0;max-width:none;padding:0}.panel{box-shadow:none}.topic-section{break-inside:avoid}.results{display:block!important}.question{font-size:10pt}.feedback{display:block}.options{gap:2px}.option{padding:4px 8px}}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">MAT4221 · Preparación para la EFT</div>
+      <h1>Autodiagnóstico de Estadística</h1>
+      <p>Identifica lo que ya dominas y los contenidos que conviene reforzar antes de la Evaluación Final Transversal.</p>
+      <div class="hero-tags"><span class="hero-tag">34 preguntas</span><span class="hero-tag">8 áreas de aprendizaje</span><span class="hero-tag">2 intentos</span><span class="hero-tag">Retroalimentación inmediata</span></div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="panel intro" aria-labelledby="intro-title">
+      <div><h2 id="intro-title">Antes de comenzar</h2><p>Responde sin apoyo en el primer intento. Las respuestas incorrectas tendrán una segunda oportunidad con una pista. El resultado no es una nota: es tu mapa de estudio.</p></div>
+      <div class="name-wrap"><label for="studentName">Nombre (opcional)</label><input id="studentName" autocomplete="name" placeholder="Escribe tu nombre"></div>
+    </section>
+
+    <section class="panel progress-panel" aria-label="Progreso del autodiagnóstico">
+      <div class="progress-top"><span id="progressText">0 de 34 respondidas</span><span id="attemptText">Primer intento</span></div>
+      <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+      <nav class="topic-nav" id="topicNav" aria-label="Ir a un tema"></nav>
+    </section>
+
+    <div id="quiz"></div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="checkBtn">Revisar primer intento</button>
+      <button class="btn btn-secondary" id="saveBtn">Guardar avance</button>
+      <button class="btn btn-danger" id="resetBtn">Comenzar de nuevo</button>
+    </div>
+    <p class="attempt-note" id="attemptNote">Debes responder todas las preguntas antes de revisar el intento.</p>
+
+    <section class="panel results" id="results" aria-live="polite">
+      <h2>Tu diagnóstico final</h2>
+      <p id="resultGreeting"></p>
+      <div class="result-grid">
+        <div class="score-ring" id="scoreRing"><div class="score-value"><strong id="scorePercent">0%</strong><span id="scoreFraction">0 de 34</span></div></div>
+        <div><div class="diagnosis" id="diagnosis"></div><div class="topic-results" id="topicResults"></div></div>
+      </div>
+      <div class="recommendations" id="recommendations"></div>
+      <div class="results-actions"><button class="btn btn-primary" id="downloadBtn">Descargar mi diagnóstico</button><button class="btn btn-secondary" onclick="window.print()">Imprimir / guardar en PDF</button></div>
+    </section>
+  </main>
+  <footer>Autodiagnóstico de preparación · Evaluación Final Transversal MAT4221</footer>
+
+  <script>
+  'use strict';
+  const topics = [
+    {id:'basicos',n:'1',title:'Conceptos básicos',short:'Conceptos básicos',goal:'Población, muestra y clasificación de variables'},
+    {id:'frecuencias',n:'2',title:'Tablas de frecuencias',short:'Frecuencias',goal:'Frecuencias absolutas, relativas y acumuladas'},
+    {id:'graficos',n:'3',title:'Representaciones gráficas',short:'Gráficos',goal:'Intervalos y gráficos de dispersión'},
+    {id:'tendencia',n:'4',title:'Tendencia central',short:'Media',goal:'Cálculo e interpretación de la media'},
+    {id:'dispersion',n:'5',title:'Medidas de dispersión',short:'Dispersión',goal:'Coeficiente de variación y homogeneidad'},
+    {id:'relacion',n:'6',title:'Relación entre variables',short:'Relación y regresión',goal:'Correlación, regresión lineal y R²'},
+    {id:'probabilidad',n:'7',title:'Probabilidades',short:'Probabilidades',goal:'Probabilidad simple, unión, conjunta y condicional'},
+    {id:'normal',n:'8',title:'Distribución normal',short:'Distribución normal',goal:'Probabilidades con DISTR.NORM.N en Excel'}
+  ];
+  const freqTable = `<div class="context"><b>Tabla de tiempos de espera de 40 clientes</b><table class="mini"><tr><th>Tiempo (min)</th><th>fᵢ</th></tr><tr><td>[0, 5[</td><td>8</td></tr><tr><td>[5, 10[</td><td>14</td></tr><tr><td>[10, 15[</td><td>10</td></tr><tr><td>[15, 20]</td><td>8</td></tr></table></div>`;
+  const probabilityTable = `<div class="context"><b>Distribución de 500 estudiantes</b><table class="mini"><tr><th>Provincia</th><th>Básica 1.er ciclo</th><th>Básica 2.º ciclo</th><th>Media</th><th>Total</th></tr><tr><td>Los Andes</td><td>35</td><td>26</td><td>28</td><td>89</td></tr><tr><td>Quillota</td><td>19</td><td>14</td><td>21</td><td>54</td></tr><tr><td>San Antonio</td><td>52</td><td>42</td><td>61</td><td>155</td></tr><tr><td>Valparaíso</td><td>49</td><td>74</td><td>79</td><td>202</td></tr><tr><th>Total</th><th>155</th><th>156</th><th>189</th><th>500</th></tr></table></div>`;
+  const barChart = `<div class="context"><svg class="chart" viewBox="0 0 560 260" role="img" aria-label="Gráfico de frecuencias por intervalo"><text x="280" y="20" text-anchor="middle" class="chart-title">Duración de trámites</text><line x1="58" y1="218" x2="530" y2="218" stroke="#42566f"/><line x1="58" y1="35" x2="58" y2="218" stroke="#42566f"/><rect x="82" y="145" width="74" height="73" fill="#79a9d5"/><rect x="180" y="72" width="74" height="146" fill="#2d6da3"/><rect x="278" y="108" width="74" height="110" fill="#5d94c2"/><rect x="376" y="181" width="74" height="37" fill="#a6c5df"/><text x="119" y="239" text-anchor="middle" class="axis-label">0–5</text><text x="217" y="239" text-anchor="middle" class="axis-label">5–10</text><text x="315" y="239" text-anchor="middle" class="axis-label">10–15</text><text x="413" y="239" text-anchor="middle" class="axis-label">15–20</text><text x="300" y="257" text-anchor="middle" class="axis-label">Duración (días)</text><text x="45" y="185" text-anchor="end" class="axis-label">5</text><text x="45" y="149" text-anchor="end" class="axis-label">10</text><text x="45" y="112" text-anchor="end" class="axis-label">15</text><text x="45" y="76" text-anchor="end" class="axis-label">20</text><text x="45" y="40" text-anchor="end" class="axis-label">25</text><text x="119" y="137" text-anchor="middle" class="axis-label">10</text><text x="217" y="64" text-anchor="middle" class="axis-label">20</text><text x="315" y="100" text-anchor="middle" class="axis-label">15</text><text x="413" y="173" text-anchor="middle" class="axis-label">5</text></svg></div>`;
+  const scatter = `<div class="context"><svg class="chart" viewBox="0 0 560 290" role="img" aria-label="Diagrama de dispersión descendente entre horas de capacitación y cantidad de errores"><text x="280" y="19" text-anchor="middle" class="chart-title">Capacitación y errores de registro</text><line x1="60" y1="240" x2="525" y2="240" stroke="#42566f"/><line x1="60" y1="35" x2="60" y2="240" stroke="#42566f"/><line x1="88" y1="63" x2="494" y2="214" stroke="#88acc8" stroke-width="3" stroke-dasharray="6 5"/><g fill="#24699e" stroke="#fff" stroke-width="2"><circle cx="95" cy="70" r="6"/><circle cx="135" cy="88" r="6"/><circle cx="170" cy="82" r="6"/><circle cx="212" cy="119" r="6"/><circle cx="255" cy="126" r="6"/><circle cx="300" cy="151" r="6"/><circle cx="343" cy="158" r="6"/><circle cx="390" cy="187" r="6"/><circle cx="436" cy="181" r="6"/><circle cx="482" cy="213" r="6"/></g><text x="293" y="280" text-anchor="middle" class="axis-label">Horas de capacitación</text><text transform="translate(17 143) rotate(-90)" text-anchor="middle" class="axis-label">Cantidad de errores</text></svg></div>`;
+  const qs = [
+    {t:'basicos',p:'Una institución desea conocer el tiempo semanal que sus 2.400 estudiantes destinan a estudiar. Encuesta a 300 estudiantes seleccionados al azar. ¿Cuál es la población?',o:['Los 300 estudiantes encuestados','Los 2.400 estudiantes de la institución','Las horas semanales de estudio','Solo quienes estudian más de una hora'],a:1,h:'La población corresponde al conjunto completo sobre el que se quiere concluir.',e:'La población está formada por los 2.400 estudiantes; los 300 encuestados constituyen la muestra.'},
+    {t:'basicos',p:'En el estudio anterior, ¿cuál es la muestra?',o:['Los 300 estudiantes encuestados','Los 2.400 estudiantes de la institución','El promedio de horas obtenido','Todos los estudiantes del país'],a:0,h:'Busca el subconjunto que efectivamente fue observado.',e:'La muestra son los 300 estudiantes seleccionados y encuestados.'},
+    {t:'basicos',p:'La variable “tipo de contrato” (indefinido, plazo fijo, honorarios) se clasifica como:',o:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'],a:0,h:'Sus categorías no poseen un orden natural.',e:'Es cualitativa nominal porque expresa categorías sin jerarquía.'},
+    {t:'basicos',p:'La variable “nivel de satisfacción” (bajo, medio, alto) se clasifica como:',o:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'],a:1,h:'Las categorías pueden ordenarse de menor a mayor.',e:'Es cualitativa ordinal: las categorías son cualitativas, pero poseen un orden.'},
+    {t:'basicos',p:'¿Qué clasificación conjunta es correcta?',o:['Cantidad de reclamos: cuantitativa continua; temperatura: cuantitativa discreta','Cantidad de reclamos: cuantitativa discreta; temperatura: cuantitativa continua','Cantidad de reclamos y temperatura: cualitativas','Cantidad de reclamos y temperatura: cuantitativas discretas'],a:1,h:'Los reclamos se cuentan en números enteros; la temperatura puede tomar valores decimales.',e:'La cantidad de reclamos es cuantitativa discreta porque se cuenta; la temperatura es cuantitativa continua porque se mide y puede tomar valores decimales.'},
+
+    {t:'frecuencias',p:'En la tabla, ¿qué significa fᵢ = 14 para el intervalo [5, 10[ minutos?',c:freqTable,o:['El 14% esperó entre 5 y menos de 10 minutos','14 clientes esperaron entre 5 y menos de 10 minutos','14 clientes esperaron como máximo 10 minutos','La frecuencia acumulada es 14'],a:1,h:'fᵢ es un conteo, no un porcentaje ni una acumulación.',e:'La frecuencia absoluta indica que 14 clientes pertenecen a ese intervalo.'},
+    {t:'frecuencias',p:'¿Cuál es la frecuencia relativa hᵢ del intervalo [5, 10[?',c:freqTable,o:['14%','22%','35%','55%'],a:2,h:'Divide la frecuencia del intervalo por el total: 14 ÷ 40.',e:'hᵢ = 14/40 = 0,35 = 35%.'},
+    {t:'frecuencias',p:'¿Cuál es la frecuencia absoluta acumulada Fᵢ hasta menos de 10 minutos?',c:freqTable,o:['8','14','22','32'],a:2,h:'Suma las frecuencias de los dos primeros intervalos.',e:'Fᵢ = 8 + 14 = 22 clientes.'},
+    {t:'frecuencias',p:'¿Qué interpretación corresponde a Hᵢ = 0,80 hasta menos de 15 minutos?',c:freqTable,o:['El 80% esperó 15 minutos exactos','32 clientes representan el 80% que esperó menos de 15 minutos','El 20% esperó menos de 15 minutos','80 clientes esperaron menos de 15 minutos'],a:1,h:'Una frecuencia relativa acumulada combina porcentaje y límite superior.',e:'8 + 14 + 10 = 32; por tanto, 32/40 = 0,80. El 80% esperó menos de 15 minutos.'},
+
+    {t:'graficos',p:'Según el gráfico, ¿cuál es el intervalo de mayor frecuencia?',c:barChart,o:['0–5 días','5–10 días','10–15 días','15–20 días'],a:1,h:'Identifica la barra de mayor altura.',e:'El intervalo 5–10 días posee la frecuencia más alta: 20 trámites.'},
+    {t:'graficos',p:'Según el gráfico, ¿cuál es el intervalo de menor frecuencia?',c:barChart,o:['0–5 días','5–10 días','10–15 días','15–20 días'],a:3,h:'Identifica la barra de menor altura.',e:'El intervalo 15–20 días posee la frecuencia más baja: 5 trámites.'},
+    {t:'graficos',p:'Si se estudia cómo las horas de capacitación influyen en la cantidad de errores, ¿cómo deben ubicarse las variables en un gráfico de dispersión?',o:['Errores en X y horas en Y','Horas en X y errores en Y','Ambas variables en X','El orden no importa'],a:1,h:'La posible causa o variable explicativa se ubica habitualmente en el eje horizontal.',e:'Las horas de capacitación son la variable independiente (X); los errores, la variable dependiente (Y).'},
+    {t:'graficos',p:'¿Qué relación visual se observa en el gráfico?',c:scatter,o:['A más capacitación, tienden a aumentar los errores','No existe ninguna tendencia','A más capacitación, tienden a disminuir los errores','Todos los puntos forman una línea perfecta'],a:2,h:'Observa si la nube de puntos asciende o desciende de izquierda a derecha.',e:'Se observa una relación negativa: al aumentar las horas de capacitación, la cantidad de errores tiende a disminuir.'},
+
+    {t:'tendencia',p:'Los tiempos de respuesta fueron 12, 15, 18, 10 y 20 minutos. ¿Cuál es la media?',o:['14 minutos','15 minutos','16 minutos','75 minutos'],a:1,h:'Suma los cinco valores y divide el resultado por 5.',e:'(12 + 15 + 18 + 10 + 20)/5 = 75/5 = 15 minutos.'},
+    {t:'tendencia',p:'En Excel, ¿qué fórmula calcula la media de los datos ubicados entre B2 y B21?',o:['=MEDIA(B2:B21)','=PROMEDIO(B2:B21)','=SUMA(B2:B21)','=MEDIANA(B2:B21)'],a:1,h:'La función en Excel en español utiliza el nombre PROMEDIO.',e:'La fórmula correcta es =PROMEDIO(B2:B21).'},
+    {t:'tendencia',p:'La media del tiempo de atención fue 8,4 minutos. ¿Cuál es la interpretación más completa?',o:['La media es 8,4','La atención fue rápida','En promedio, el tiempo de atención de los clientes fue de 8,4 minutos','Todos los clientes fueron atendidos exactamente en 8,4 minutos'],a:2,h:'Una interpretación completa nombra la variable, el valor, la unidad y el sentido contextual.',e:'La opción correcta incluye la variable “tiempo de atención”, el valor 8,4, la unidad minutos y el significado promedio.'},
+
+    {t:'dispersion',p:'El tiempo de despacho tiene media 40 horas y desviación estándar 4 horas. ¿Cuál es su coeficiente de variación?',o:['4%','10%','36%','44%'],a:1,h:'CV = desviación estándar ÷ media × 100%.',e:'CV = (4/40) × 100% = 10%.'},
+    {t:'dispersion',p:'Proceso A: media 40 y desviación 4. Proceso B: media 80 y desviación 16. ¿Cuál presenta un comportamiento más homogéneo?',o:['Proceso A, porque su CV es 10%','Proceso B, porque su media es mayor','Proceso B, porque su CV es 20%','Ambos tienen igual homogeneidad'],a:0,h:'Compara la dispersión relativa: cuanto menor es el CV, mayor es la homogeneidad.',e:'CV(A)=10% y CV(B)=20%. El proceso A es más homogéneo.'},
+    {t:'dispersion',p:'Si dos grupos tienen coeficientes de variación de 8% y 27%, ¿qué conclusión es correcta?',o:['El grupo con 27% es más homogéneo','El grupo con 8% es más homogéneo','Ambos poseen igual dispersión','No se pueden comparar coeficientes de variación'],a:1,h:'Un CV pequeño indica que los datos se concentran más cerca de la media.',e:'El grupo con CV de 8% presenta menor dispersión relativa y, por tanto, mayor homogeneidad.'},
+
+    {t:'relacion',p:'Se analiza si las horas de capacitación permiten explicar la cantidad de errores de registro. ¿Cuáles son las variables independiente y dependiente?',o:['Independiente: errores; dependiente: horas','Independiente: horas de capacitación; dependiente: cantidad de errores','Ambas son independientes','No se pueden definir'],a:1,h:'La independiente es la variable usada para explicar o predecir a la otra.',e:'Las horas de capacitación (h) son independientes; la cantidad de errores (errores) es dependiente.'},
+    {t:'relacion',p:'El coeficiente de correlación entre horas de capacitación y errores es r = −0,86. ¿Cómo se interpreta?',o:['Relación lineal positiva fuerte','Relación lineal negativa fuerte','Relación lineal negativa débil','Ausencia de relación lineal'],a:1,h:'El signo indica dirección y la cercanía a 1 en valor absoluto indica intensidad.',e:'r = −0,86 indica una relación lineal fuerte y negativa: más capacitación se asocia con menos errores.'},
+    {t:'relacion',p:'Para el modelo ŷ = 120 − 3,5x, donde x son horas de capacitación e ŷ es la cantidad estimada de errores, ¿qué significa la pendiente?',o:['Por cada hora adicional, se estiman 3,5 errores más','Por cada hora adicional, se estiman 3,5 errores menos','Sin capacitación siempre ocurren 3,5 errores','El modelo explica el 3,5% de los errores'],a:1,h:'La pendiente es el cambio estimado en Y cuando X aumenta en una unidad.',e:'La pendiente −3,5 significa que por cada hora adicional de capacitación se estiman, en promedio, 3,5 errores menos.'},
+    {t:'relacion',p:'En el modelo ŷ = 120 − 3,5x, ¿qué representa el coeficiente de posición 120?',o:['Los errores estimados cuando la capacitación es 0 horas','Las horas necesarias para no cometer errores','El porcentaje explicado por el modelo','La correlación entre las variables'],a:0,h:'El coeficiente de posición es el valor estimado de Y cuando X = 0.',e:'120 es la cantidad estimada de errores cuando las horas de capacitación son cero.'},
+    {t:'relacion',p:'Si el modelo es ŷ = 120 − 3,5x y R² = 0,81, ¿cuál afirmación es correcta para x = 20 horas?',o:['Se estiman 50 errores y el modelo explica el 81% de la variabilidad de los errores','Se estiman 190 errores y la correlación es 0,81','Se estiman 50 errores y el modelo explica el 19% de la variabilidad','Se estiman 120 errores y R² es la pendiente'],a:0,h:'Primero reemplaza x por 20. Luego interpreta R² como proporción de variabilidad explicada.',e:'ŷ = 120 − 3,5(20) = 50 errores. R² = 0,81 significa que el 81% de la variabilidad de los errores es explicada por el modelo.'},
+
+    {t:'probabilidad',p:'Si se elige un estudiante al azar, ¿cuál es la probabilidad de que viva en Quillota?',c:probabilityTable,o:['5,2%','10,8%','15,6%','21,0%'],a:1,h:'Usa el total de Quillota y divídelo por los 500 estudiantes.',e:'P(Quillota)=54/500=0,108=10,8%.'},
+    {t:'probabilidad',p:'¿Cuál es la probabilidad de que viva en Valparaíso o curse enseñanza media?',c:probabilityTable,o:['40,4%','51,2%','62,4%','78,2%'],a:2,h:'Suma ambos eventos y resta a quienes cumplen las dos condiciones para no contarlos dos veces.',e:'P(Valparaíso o Media)=(202+189−79)/500=312/500=62,4%.'},
+    {t:'probabilidad',p:'¿Cuál es la probabilidad de que sea de enseñanza media y viva en Valparaíso?',c:probabilityTable,o:['12,2%','15,8%','39,1%','41,8%'],a:1,h:'“Y” exige la celda que cumple simultáneamente ambas condiciones.',e:'P(Media y Valparaíso)=79/500=15,8%.'},
+    {t:'probabilidad',p:'Sabiendo que el estudiante cursa básica de segundo ciclo, ¿cuál es la probabilidad de que viva en Los Andes?',c:probabilityTable,o:['5,2%','14,6%','16,7%','29,2%'],a:2,h:'El nuevo total de referencia es 156, correspondiente a básica de segundo ciclo.',e:'P(Los Andes | Básica 2.º ciclo)=26/156≈16,7%.'},
+    {t:'probabilidad',p:'Sabiendo que el estudiante vive en Quillota, ¿cuál es la probabilidad de que curse enseñanza media?',c:probabilityTable,o:['4,2%','11,1%','25,9%','38,9%'],a:3,h:'Ahora el total de referencia es 54, correspondiente a Quillota.',e:'P(Media | Quillota)=21/54≈38,9%.'},
+
+    {t:'normal',p:'La distancia entre casa y colegio se distribuye normalmente con media 5,90 km y desviación estándar 2,31 km. ¿Qué fórmula de Excel calcula P(X ≤ 7)?',o:['=DISTR.NORM.N(7;5,90;2,31;1)','=1-DISTR.NORM.N(7;5,90;2,31;1)','=DISTR.NORM.N(5,90;7;2,31;1)','=DISTR.NORM.N(7;5,90;2,31;0)'],a:0,h:'Para “menor o igual” se usa directamente la distribución acumulada con acumulado = 1.',e:'La fórmula correcta es =DISTR.NORM.N(7;5,90;2,31;1).'},
+    {t:'normal',p:'Excel entrega P(X ≤ 7) = 0,684. ¿Cuál es la interpretación correcta?',o:['El 68,4% vive exactamente a 7 km','El 68,4% vive a 7 km o menos de su colegio','El 31,6% vive a 7 km o menos','68,4 estudiantes viven a menos de 7 km'],a:1,h:'Una probabilidad acumulada incluye todos los valores hasta el límite indicado.',e:'Se estima que el 68,4% de los estudiantes vive a una distancia menor o igual a 7 km.'},
+    {t:'normal',p:'¿Qué expresión calcula la probabilidad de vivir a más de 9 km del colegio?',o:['DISTR.NORM.N(9;media;desv;1)','1 − DISTR.NORM.N(9;media;desv;1)','DISTR.NORM.N(9;media;desv;0)','DISTR.NORM.N(1;media;desv;9)'],a:1,h:'Excel entrega el área acumulada a la izquierda; para “más de” necesitas el complemento.',e:'P(X>9)=1−P(X≤9), por eso se resta la probabilidad acumulada a 1.'},
+    {t:'normal',p:'¿Qué expresión calcula P(4 ≤ X ≤ 8)?',o:['DISTR.NORM.N(4;media;desv;1) − DISTR.NORM.N(8;media;desv;1)','DISTR.NORM.N(8;media;desv;1) − DISTR.NORM.N(4;media;desv;1)','1 − DISTR.NORM.N(8;media;desv;1)','DISTR.NORM.N(8;media;desv;1) + DISTR.NORM.N(4;media;desv;1)'],a:1,h:'Para un intervalo, resta la acumulada del límite inferior a la acumulada del límite superior.',e:'P(4≤X≤8)=F(8)−F(4).'},
+    {t:'normal',p:'Si P(4 ≤ X ≤ 8) = 0,613 para la distancia, ¿cuál es la interpretación completa?',o:['El 61,3% vive exactamente a 4 u 8 km','La distancia promedio es 61,3 km','Se estima que el 61,3% vive entre 4 y 8 km de su colegio','El 38,7% necesariamente vive a más de 8 km'],a:2,h:'Incluye variable, intervalo, unidad y porcentaje.',e:'La interpretación correcta indica que el 61,3% vive a una distancia comprendida entre 4 y 8 km de su colegio.'}
+  ];
+
+  let phase=0; // 0: primer intento; 1: segundo intento; 2: finalizado
+  let state=qs.map(()=>({choice:null,firstChoice:null,correct:false,locked:false}));
+  const quiz=document.getElementById('quiz'), checkBtn=document.getElementById('checkBtn'), attemptNote=document.getElementById('attemptNote');
+  function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+  function render(){
+    quiz.innerHTML=topics.map(t=>{
+      const indexes=qs.map((q,i)=>q.t===t.id?i:-1).filter(i=>i>=0);
+      return `<section class="panel topic-section" id="topic-${t.id}"><div class="topic-head"><div><h2>${t.n}. ${t.title}</h2><p>${t.goal}</p></div><span class="topic-score" id="score-${t.id}">0 de ${indexes.length} logradas</span></div><div class="questions">${indexes.map(i=>questionHTML(i)).join('')}</div></section>`;
+    }).join('');
+    document.getElementById('topicNav').innerHTML=topics.map(t=>`<button class="topic-chip" data-go="${t.id}"><span class="dot" id="dot-${t.id}"></span>${t.n}. ${t.short}</button>`).join('');
+    bindOptions(); updateUI();
+  }
+  function questionHTML(i){const q=qs[i];return `<article class="question" id="q-${i}"><div><span class="q-number">${i+1}</span><h3>${q.p}</h3></div>${q.c||''}<div class="options" role="radiogroup" aria-label="Opciones de la pregunta ${i+1}">${q.o.map((o,j)=>`<label class="option" data-q="${i}" data-o="${j}"><input type="radio" name="q${i}" value="${j}"><span>${o}</span></label>`).join('')}</div><div class="feedback" id="fb-${i}"></div></article>`}
+  function bindOptions(){
+    document.querySelectorAll('.option').forEach(el=>el.addEventListener('click',()=>{const i=+el.dataset.q,j=+el.dataset.o;if(state[i].locked||phase===2)return;state[i].choice=j;document.querySelectorAll(`[data-q="${i}"]`).forEach(x=>x.classList.toggle('selected',+x.dataset.o===j));updateUI();autoSave();}));
+    document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>document.getElementById('topic-'+b.dataset.go).scrollIntoView({behavior:'smooth'})));
+  }
+  function updateUI(){
+    const answered=state.filter(s=>s.choice!==null||s.locked).length, pct=answered/qs.length*100;
+    document.getElementById('progressText').textContent=`${answered} de ${qs.length} respondidas`;
+    document.getElementById('progressFill').style.width=pct+'%';
+    document.getElementById('attemptText').textContent=phase===0?'Primer intento':phase===1?'Segundo intento':'Diagnóstico finalizado';
+    topics.forEach(t=>{const ids=qs.map((q,i)=>q.t===t.id?i:-1).filter(i=>i>=0), ok=ids.filter(i=>state[i].correct).length;document.getElementById('score-'+t.id).textContent=`${ok} de ${ids.length} logradas`;const tried=ids.filter(i=>state[i].choice!==null||state[i].locked).length;const dot=document.getElementById('dot-'+t.id);dot.className='dot'+(tried===0?'':ok/ids.length>=.8?' green':ok/ids.length>=.6?' amber':' red');});
+    if(phase<2){const needed=state.filter(s=>!s.locked&&s.choice===null).length;checkBtn.disabled=needed>0;attemptNote.textContent=needed?`Faltan ${needed} pregunta${needed===1?'':'s'} por responder antes de revisar este intento.`:(phase===0?'Ya puedes revisar tu primer intento.':'Revisa tu segundo intento para obtener el diagnóstico final.');}
+  }
+  function evaluate(){
+    if(checkBtn.disabled)return;
+    if(phase===0){
+      qs.forEach((q,i)=>{const s=state[i];s.firstChoice=s.choice;if(s.choice===q.a){s.correct=true;s.locked=true;showAnswer(i,'good',`✓ ¡Correcto! ${q.e}`,true);}else{showAnswer(i,'hint',`Pista para tu segundo intento: ${q.h}`,false);s.choice=null;document.querySelectorAll(`[data-q="${i}"]`).forEach(x=>{x.classList.remove('selected','wrong');x.querySelector('input').checked=false;});}});
+      phase=1;checkBtn.textContent='Revisar segundo intento';window.scrollTo({top:document.querySelector('.topic-section .feedback.hint')?.closest('.question').offsetTop||0,behavior:'smooth'});
+    }else{
+      qs.forEach((q,i)=>{const s=state[i];if(!s.locked){s.correct=s.choice===q.a;s.locked=true;if(s.correct)showAnswer(i,'good',`✓ ¡Correcto! ${q.e}`,true);else showAnswer(i,'bad',`Respuesta correcta: ${q.o[q.a]}. ${q.e}`,true);}});
+      phase=2;checkBtn.disabled=true;checkBtn.textContent='Diagnóstico finalizado';showResults();
+    }
+    updateUI();autoSave();
+  }
+  function showAnswer(i,type,text,reveal){
+    const fb=document.getElementById('fb-'+i);fb.className=`feedback show ${type}`;fb.innerHTML=text;
+    document.querySelectorAll(`[data-q="${i}"]`).forEach(x=>{x.classList.remove('correct','wrong');if(reveal&&+x.dataset.o===qs[i].a)x.classList.add('correct');if(reveal&&state[i].choice!==qs[i].a&&+x.dataset.o===state[i].choice)x.classList.add('wrong');if(state[i].locked){x.classList.add('locked');x.querySelector('input').disabled=true;}});
+  }
+  function resultClass(r){return r>=.8?'green':r>=.6?'amber':'red'}
+  function showResults(){
+    const total=state.filter(s=>s.correct).length,p=Math.round(total/qs.length*100), name=document.getElementById('studentName').value.trim();
+    document.getElementById('results').classList.add('show');document.getElementById('resultGreeting').textContent=name?`${name}, este es tu mapa de preparación:`:'Este es tu mapa de preparación:';
+    document.getElementById('scorePercent').textContent=p+'%';document.getElementById('scoreFraction').textContent=`${total} de ${qs.length}`;document.getElementById('scoreRing').style.background=`conic-gradient(${p>=80?'#16845b':p>=60?'#e59b25':'#c64b4b'} ${p}%,#e5edf4 ${p}%)`;
+    const d=p>=80?['¡Buen dominio general!','Estás en una zona de preparación sólida. Revisa los errores puntuales y practica la redacción de interpretaciones completas.']:p>=60?['Vas por buen camino','Dominas parte importante del temario, pero hay contenidos que conviene reforzar antes de la evaluación.']:['Necesitas reforzar contenidos clave','Usa este resultado como guía: comienza por las áreas en rojo, vuelve a los ejemplos resueltos y luego repite el autodiagnóstico.'];
+    document.getElementById('diagnosis').innerHTML=`<h3>${d[0]}</h3><p>${d[1]}</p>`;
+    const stats=topics.map(t=>{const ids=qs.map((q,i)=>q.t===t.id?i:-1).filter(i=>i>=0),ok=ids.filter(i=>state[i].correct).length;return {...t,ok,total:ids.length,r:ok/ids.length};});
+    document.getElementById('topicResults').innerHTML=stats.map(s=>`<div class="topic-result"><span class="traffic ${resultClass(s.r)}"></span><div><b>${s.n}. ${s.short}</b><small>${s.r>=.8?'Dominio logrado':s.r>=.6?'En desarrollo':'Requiere refuerzo'}</small></div><strong>${s.ok}/${s.total}</strong></div>`).join('');
+    const priority=stats.filter(s=>s.r<.8).sort((a,b)=>a.r-b.r).slice(0,3);
+    document.getElementById('recommendations').innerHTML=`<h3>Tu ruta de refuerzo</h3><ul>${priority.length?priority.map(s=>`<li><b>${s.title}:</b> ${recommendation(s.id)}</li>`).join(''):'<li>Repasa únicamente las preguntas falladas y practica explicar cada resultado con variable, valor, unidad y contexto.</li>'}</ul>`;
+    setTimeout(()=>document.getElementById('results').scrollIntoView({behavior:'smooth'}),150);
+  }
+  function recommendation(id){return ({basicos:'distingue población de muestra y fundamenta cada tipo de variable.',frecuencias:'practica fᵢ, hᵢ, Fᵢ y Hᵢ, cuidando si expresas cantidad o porcentaje.',graficos:'identifica máximos y mínimos, y ubica la variable independiente en X.',tendencia:'calcula la media y redacta interpretaciones con variable, valor, unidad y contexto.',dispersion:'calcula el CV y recuerda que un valor menor indica mayor homogeneidad.',relacion:'repasa variable independiente/dependiente, r, pendiente, intercepto, R² y estimaciones.',probabilidad:'traduce “y”, “o” y “sabiendo que” antes de elegir el total de referencia.',normal:'practica menor, mayor y entre dos valores con DISTR.NORM.N y luego interpreta.'})[id];}
+  function autoSave(){try{localStorage.setItem('mat4221-autodiag',JSON.stringify({phase,state,name:document.getElementById('studentName').value}));}catch(e){}}
+  function load(){try{const x=JSON.parse(localStorage.getItem('mat4221-autodiag'));if(!x||!Array.isArray(x.state)||x.state.length!==qs.length)return;phase=x.phase||0;state=x.state;document.getElementById('studentName').value=x.name||'';state.forEach((s,i)=>{if(s.choice!==null){const inp=document.querySelector(`input[name="q${i}"][value="${s.choice}"]`);if(inp){inp.checked=true;inp.closest('.option').classList.add('selected');}}if(s.locked){showAnswer(i,s.correct?'good':'bad',s.correct?`✓ ¡Correcto! ${qs[i].e}`:`Respuesta correcta: ${qs[i].o[qs[i].a]}. ${qs[i].e}`,true);}else if(phase===1&&s.firstChoice!==null){showAnswer(i,'hint',`Pista para tu segundo intento: ${qs[i].h}`,false);}});if(phase===1)checkBtn.textContent='Revisar segundo intento';if(phase===2){checkBtn.textContent='Diagnóstico finalizado';showResults();}updateUI();}catch(e){}}
+  function download(){const name=document.getElementById('studentName').value.trim()||'Estudiante',total=state.filter(s=>s.correct).length;let txt=`AUTODIAGNÓSTICO EFT · MAT4221\n${name}\nResultado: ${total}/${qs.length} (${Math.round(total/qs.length*100)}%)\n\n`;topics.forEach(t=>{const ids=qs.map((q,i)=>q.t===t.id?i:-1).filter(i=>i>=0),ok=ids.filter(i=>state[i].correct).length;txt+=`${t.n}. ${t.title}: ${ok}/${ids.length}\n`;});txt+='\nPrioriza los temas marcados como “Requiere refuerzo” en la pantalla de resultados.\n';const blob=new Blob([txt],{type:'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Diagnostico_MAT4221.txt';a.click();URL.revokeObjectURL(a.href);}
+  checkBtn.addEventListener('click',evaluate);document.getElementById('saveBtn').addEventListener('click',()=>{autoSave();attemptNote.textContent='Avance guardado en este dispositivo.';});document.getElementById('resetBtn').addEventListener('click',()=>{if(confirm('¿Deseas borrar las respuestas y comenzar de nuevo?')){localStorage.removeItem('mat4221-autodiag');location.reload();}});document.getElementById('studentName').addEventListener('input',autoSave);document.getElementById('downloadBtn').addEventListener('click',download);
+  render();load();
+  </script>
+</body>
+</html>
